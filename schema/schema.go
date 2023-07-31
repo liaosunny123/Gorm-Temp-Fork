@@ -17,32 +17,32 @@ import (
 var ErrUnsupportedDataType = errors.New("unsupported data type")
 
 type Schema struct {
-	Name                      string
-	ModelType                 reflect.Type
-	Table                     string
-	PrioritizedPrimaryField   *Field
-	DBNames                   []string
-	PrimaryFields             []*Field
-	PrimaryFieldDBNames       []string
-	Fields                    []*Field
-	FieldsByName              map[string]*Field
-	FieldsByBindName          map[string]*Field // embedded fields is 'Embed.Field'
-	FieldsByDBName            map[string]*Field
-	FieldsWithDefaultDBValue  []*Field // fields with default value assigned by database
-	Relationships             Relationships
-	CreateClauses             []clause.Interface
-	QueryClauses              []clause.Interface
-	UpdateClauses             []clause.Interface
-	DeleteClauses             []clause.Interface
-	BeforeCreate, AfterCreate bool
-	BeforeUpdate, AfterUpdate bool
-	BeforeDelete, AfterDelete bool
-	BeforeSave, AfterSave     bool
-	BeforeFind, AfterFind     bool
-	err                       error
-	initialized               chan struct{}
-	namer                     Namer
-	cacheStore                *sync.Map
+	Name                                 string
+	ModelType                            reflect.Type
+	Table                                string
+	PrioritizedPrimaryField              *Field
+	DBNames                              []string
+	PrimaryFields                        []*Field
+	PrimaryFieldDBNames                  []string
+	Fields                               []*Field
+	FieldsByName                         map[string]*Field
+	FieldsByBindName                     map[string]*Field // embedded fields is 'Embed.Field'
+	FieldsByDBName                       map[string]*Field
+	FieldsWithDefaultDBValue             []*Field // fields with default value assigned by database
+	Relationships                        Relationships
+	CreateClauses                        []clause.Interface
+	QueryClauses                         []clause.Interface
+	UpdateClauses                        []clause.Interface
+	DeleteClauses                        []clause.Interface
+	BeforeCreate, AfterCreate            bool
+	BeforeUpdate, AfterUpdate            bool
+	BeforeDelete, AfterDelete            bool
+	BeforeSave, AfterSave                bool
+	BeforeFind, AfterFind, AfterFindMust bool
+	err                                  error
+	initialized                          chan struct{}
+	namer                                Namer
+	cacheStore                           *sync.Map
 }
 
 func (schema Schema) String() string {
@@ -288,7 +288,7 @@ func ParseWithSpecialTableName(dest interface{}, cacheStore *sync.Map, namer Nam
 		}
 	}
 
-	callbacks := []string{"BeforeCreate", "AfterCreate", "BeforeUpdate", "AfterUpdate", "BeforeSave", "AfterSave", "BeforeDelete", "AfterDelete", "AfterFind", "BeforeFind"}
+	callbacks := []string{"BeforeCreate", "AfterCreate", "BeforeUpdate", "AfterUpdate", "BeforeSave", "AfterSave", "BeforeDelete", "AfterDelete", "AfterFind", "BeforeFind", "AfterFindMust"}
 	for _, name := range callbacks {
 		if methodValue := modelValue.MethodByName(name); methodValue.IsValid() {
 			switch methodValue.Type().String() {

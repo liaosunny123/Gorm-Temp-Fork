@@ -326,3 +326,15 @@ func BeforeQuery(db *gorm.DB) {
 		})
 	}
 }
+
+func AfterQueryMust(db *gorm.DB) {
+	if db.Error == nil && db.Statement.Schema != nil && !db.Statement.SkipHooks && db.Statement.Schema.AfterFindMust {
+		callMethod(db, func(value interface{}, tx *gorm.DB) bool {
+			if i, ok := value.(AfterFindMustInterface); ok {
+				db.AddError(i.AfterFindMust(tx))
+				return true
+			}
+			return false
+		})
+	}
+}

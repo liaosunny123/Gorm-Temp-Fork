@@ -41,3 +41,7 @@ type AfterFindInterface interface {
 type BeforeFindInterface interface {
 	BeforeFind(*gorm.DB) error
 }
+
+type AfterFindMustInterface interface {
+	AfterFindMust(*gorm.DB) error
+}

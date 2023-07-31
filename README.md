@@ -1,3 +1,9 @@
+# WARNING
+
+PLEASE DO NOT USE THIS REPO, THIS REPO IS ONLY FOR TEMP.
+
+这是一个 Gorm 的临时 Fork 库，为我的团队开发使用。由于本库在几个地方对 Gorm 均做了改动，无法一次 PR 掉，因此建此库供团队临时使用。
+
 # GORM
 
 The fantastic ORM library for Golang, aims to be developer friendly.
